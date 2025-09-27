@@ -41,8 +41,8 @@ def generate_page_recursive(basepath, dir_path_content, template_path, dest_dir_
 
                     document = template_content.replace(r"{{ Title }}", title)
                     document = document.replace(r"{{ Content }}", html_content)
-                    document = document.replace(r"href=\"/", rf"href=\"{basepath}")
-                    document = document.replace(r"src=\"/", rf"src=\"{basepath}")
+                    document = document.replace("href=\"/", f"href=\"{basepath}")
+                    document = document.replace("src=\"/", f"src=\"{basepath}")
 
                     new_html_path = new_path.replace(".md", ".html")
                     with open(new_html_path, "w") as output_file:
