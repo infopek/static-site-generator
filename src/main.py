@@ -5,6 +5,7 @@ from pprint import pprint
 
 import os
 import shutil
+import sys
 
 def copy_files_recursive(source_dir_path, dest_dir_path):
     if not os.path.exists(dest_dir_path):
@@ -21,11 +22,14 @@ def copy_files_recursive(source_dir_path, dest_dir_path):
 
 
 def main():
-    if os.path.exists("./public"):
-        shutil.rmtree("./public")
+    basepath = sys.argv[1]
+    if not basepath:
+        basepath = "/"
+    if os.path.exists("./docs"):
+        shutil.rmtree("./docs")
     
-    copy_files_recursive("./static", "./public")
-    generate_page_recursive("./content", "template.html", "./public")
+    copy_files_recursive("./static", "./docs")
+    generate_page_recursive(basepath, "./content", "template.html", "./docs")
     # generate_page("content/blog/glorfindel/index.md", "template.html", "public/blog/glorfindel/index.html")
     # generate_page("content/blog/majesty/index.md", "template.html", "public/blog/majesty/index.html")
     # generate_page("content/blog/tom/index.md", "template.html", "public/blog/tom/index.html")

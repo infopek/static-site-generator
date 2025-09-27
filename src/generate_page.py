@@ -26,7 +26,7 @@ def generate_page(from_path, template_path, dest_path):
             with open(dest_path, "w") as output_file:
                 output_file.write(document)
 
-def generate_page_recursive(dir_path_content, template_path, dest_dir_path):
+def generate_page_recursive(basepath, dir_path_content, template_path, dest_dir_path):
     for d in os.listdir(dir_path_content):
         new_content_path = os.path.join(dir_path_content, d)
         new_path = os.path.join(dest_dir_path, d)
@@ -38,11 +38,15 @@ def generate_page_recursive(dir_path_content, template_path, dest_dir_path):
                     template_content = template_file.read()
                     html_content = markdown_to_html_node(md_content).to_html()
                     title = extract_title(md_content)
+
                     document = template_content.replace(r"{{ Title }}", title)
                     document = document.replace(r"{{ Content }}", html_content)
+                    document = document.replace(r"href=\"/", rf"href=\"{basepath}")
+                    document = document.replace(r"src=\"/", rf"src=\"{basepath}")
+
                     new_html_path = new_path.replace(".md", ".html")
                     with open(new_html_path, "w") as output_file:
                         output_file.write(document)
         else:
-            generate_page_recursive(new_content_path, template_path, new_path)
+            generate_page_recursive(basepath, new_content_path, template_path, new_path)
     
